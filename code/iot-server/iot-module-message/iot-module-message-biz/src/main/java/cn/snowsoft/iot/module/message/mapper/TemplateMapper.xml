@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.message.mapper.TemplateMapper">
+
+
+   <!-- <select id="selectList" resultType="cn.snowsoft.iot.module.message.model.entity.Template">
+        SELECT * from cps_collection_gateway
+        WHERE
+        deleted = 0
+        <if test="gateway.gatewayName != null and gateway.gatewayName != ''">
+            and gateway_name like concat(concat('%', #{gateway.gatewayName}), '%')
+        </if>
+        <if test="gateway.ipAddress != null and gateway.ipAddress != ''">
+            and ip_address like concat(concat('%', #{gateway.ipAddress}), '%')
+        </if>
+        <if test="gateway.isEnable!=null">
+            and is_enable = #{gateway.isEnable}
+        </if>
+        order by create_time desc
+    </select>-->
+
+</mapper>

@@ -1,0 +1,25 @@
+
+use IotCps
+
+// 清空订阅数据的函数
+def clearData(){
+try{
+    dbPath = "dfs://sinoma_demo"
+    deviceColTable = select * from loadTable(dbPath, "deviceColLog")
+    for(row in deviceColTable){
+        IotCps::cancelStreamComputing(row.dbPath, row.funName, row.deviceCode, row.col)
+    }
+}catch(ex){}
+try{
+    deviceTable = select * from loadTable(dbPath, "deviceLog")
+    for(row in deviceTable){
+        IotCps::deleteDeviceTable(dbPath, row.deviceCode)
+    }
+}catch(ex){}
+}
+
+clearData()
+
+go;
+// 删除数据库
+dropDatabase("dfs://sinoma_demo")

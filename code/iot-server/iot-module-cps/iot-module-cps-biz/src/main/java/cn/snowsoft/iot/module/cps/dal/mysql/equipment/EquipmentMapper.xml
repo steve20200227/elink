@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.cps.dal.mysql.equipment.EquipmentMapper">
+    <update id="relevancyEquipment">
+        update cps_equipment set equipment_ascription = #{passageId}
+        <where>
+            id in
+            <foreach collection="ids" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </update>
+
+
+
+
+    <select id="selectEquipmentPageByProductCode"
+            resultType="cn.snowsoft.iot.module.cps.controller.admin.equipment.vo.EquipmentPage">
+        SELECT * from cps_equipment
+        WHERE
+        deleted = 0
+        <if test="entity.equipmentName != null and entity.equipmentName != ''">
+            and equipment_name like concat(concat('%', #{entity.equipmentName}), '%')
+        </if>
+        <if test="entity.productCode != null and entity.productCode != ''">
+            and product_code = #{entity.productCode}
+        </if>
+        <if test="entity.isEnable != null">
+            and is_enable = #{entity.isEnable}
+        </if>
+        <if test="entity.collectionId != null">
+            and collection_id = #{entity.collectionId}
+        </if>
+        <if test="entity.agreementType != null">
+            and agreement_type = #{entity.agreementType}
+        </if>
+        <if test="entity.equipmentAscription != null">
+            and equipment_ascription = #{entity.equipmentAscription}
+        </if>
+        order by create_time desc
+    </select>
+    <select id="selectEquipmentPage"
+            resultType="cn.snowsoft.iot.module.cps.controller.admin.equipment.vo.EquipmentPage">
+        SELECT e.*, count(p.id) as point_count from cps_equipment e
+        left join (select * from cps_equipment_point where deleted = 0) p on p.equipment_id = e.id
+        <where>
+            e.deleted = 0
+            <if test="entity.equipmentName != null and entity.equipmentName != ''">
+                and e.equipment_name like concat(concat('%', #{entity.equipmentName}), '%')
+            </if>
+            <if test="entity.equipmentCode != null and entity.equipmentCode != ''">
+                and e.equipment_code like concat(concat('%', #{entity.equipmentCode}), '%')
+            </if>
+            <if test="entity.equipmentType != null and entity.equipmentType != ''">
+                and e.equipment_type =  #{entity.equipmentType}
+            </if>
+            <if test="entity.productName != null and entity.productName != ''">
+                and e.product_name like concat(concat('%', #{entity.productName}), '%')
+            </if>
+            <if test="entity.isEnable != null">
+                and e.is_enable = #{entity.isEnable}
+            </if>
+            <if test="entity.productCode != null and entity.productCode != ''">
+                and e.product_code = #{entity.productCode}
+            </if>
+            <if test="entity.collectionId != null">
+                and e.collection_id = #{entity.collectionId}
+            </if>
+            <if test="entity.agreementType != null">
+                and e.agreement_type = #{entity.agreementType}
+            </if>
+            <if test="entity.equipmentAscription != null">
+                and e.equipment_ascription = #{entity.equipmentAscription}
+            </if>
+            <if test="entity.passageId != null">
+                and e.equipment_ascription is null
+            </if>
+        </where>
+        group by e.id
+        order by e.create_time desc
+    </select>
+    <select id="getAgreementTypeCount"
+            resultType="cn.snowsoft.iot.module.cps.controller.admin.home.vo.EquipmentAgreementTypeVO">
+        select
+            agreement_type as type_name,
+            count(*) as equipment_count
+        from cps_equipment
+        where deleted = 0
+        GROUP BY agreement_type
+    </select>
+    <select id="getEquipmentName"
+            resultType="cn.snowsoft.iot.module.cps.api.equipment.dto.EquipmentRelateWarningDTO">
+        select
+            id as equipment_id,
+            equipment_name
+        from cps_equipment
+        where
+            deleted = 0
+          <if test="ids != null and ids.size() > 0">
+            and id in
+              <foreach collection="ids" item="item" open="(" close=")" separator=",">
+                  #{item}
+              </foreach>
+          </if>
+    </select>
+    <select id="getIsEnableCount"
+            resultType="cn.snowsoft.iot.module.cps.controller.admin.home.vo.EquipmentStatusVO">
+        select
+            is_enable,
+            count(*) as count
+        from cps_equipment
+        where deleted = 0
+        group by is_enable
+    </select>
+    <select id="getChildEquipment"
+            resultType="cn.snowsoft.iot.module.cps.dal.dataobject.equipment.EquipmentDO">
+        select * from cps_equipment
+        where deleted = 0
+            and parent_equipment = #{equipmentCode}
+    </select>
+    <select id="selectRuleList" resultType="cn.snowsoft.iot.module.cps.dal.dataobject.equipment.EquipmentDO">
+        SELECT
+            *
+        FROM
+            cps_equipment e
+                LEFT JOIN ( SELECT DISTINCT relevance_id FROM cps_rule ) r ON e.id = r.relevance_id
+        <where>
+            e.deleted = 0
+            <if test="entity.equipmentName != null and entity.equipmentName != ''">
+                and e.equipment_name like concat(concat('%', #{entity.equipmentName}), '%')
+            </if>
+            <if test="entity.equipmentCode != null and entity.equipmentCode != ''">
+                and e.equipment_code like concat(concat('%', #{entity.equipmentCode}), '%')
+            </if>
+        </where>
+    </select>
+</mapper>

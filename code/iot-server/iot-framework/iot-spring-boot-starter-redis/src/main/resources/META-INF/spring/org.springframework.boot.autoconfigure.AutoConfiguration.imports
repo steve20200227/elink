@@ -1,0 +1,2 @@
+cn.snowsoft.iot.framework.redis.config.YudaoRedisAutoConfiguration
+cn.snowsoft.iot.framework.redis.config.YudaoCacheAutoConfiguration

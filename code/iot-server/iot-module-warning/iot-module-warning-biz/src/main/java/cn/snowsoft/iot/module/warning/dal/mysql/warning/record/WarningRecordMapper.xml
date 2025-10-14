@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.warning.dal.mysql.warning.record.WarningRecordMapper">
+
+
+    <select id="selectWarningPage"
+            resultType="cn.snowsoft.iot.module.warning.dal.dataobject.warning.record.WarningRecordDO">
+        SELECT * from warning_record
+        WHERE
+        deleted = 0
+        <if test="entity.configName != null and entity.configName != ''">
+            and config_name like concat(concat('%', #{entity.configName}), '%')
+        </if>
+        <if test="entity.equipmentName != null and entity.equipmentName != ''">
+            and equipment_name like concat(concat('%', #{entity.equipmentName}), '%')
+        </if>
+        <if test="entity.pointName != null and entity.pointName != ''">
+            and point_name like concat(concat('%', #{entity.pointName}), '%')
+        </if>
+        <if test="entity.configId != null">
+            and config_id = #{entity.configId}
+        </if>
+        <if test="entity.warningType != null and entity.warningType != ''">
+            and warning_type = #{entity.warningType}
+        </if>
+        <if test="entity.status != null">
+            and status = #{entity.status}
+        </if>
+        <if test="entity.createTimes != null and entity.createTimes != ''">
+            and date_format(create_time, '%Y-%m-%d') between str_to_date(SUBSTRING_INDEX(#{entity.createTimes}, ',', 1), '%Y-%m-%d')
+            and str_to_date(SUBSTRING_INDEX(#{entity.createTimes}, ',', -1), '%Y-%m-%d')
+        </if>
+        order by create_time desc
+    </select>
+    <select id="getRecordList" resultType="cn.snowsoft.iot.module.warning.controller.admin.warning.home.vo.RecordVO">
+        select
+            id,
+            equipment_id,
+            equipment_name,
+            warning_time,
+            create_time,
+            status
+        from warning_record
+        where deleted = 0
+        order by create_time asc
+    </select>
+    <select id="getWarningEquipmentList"
+            resultType="cn.snowsoft.iot.module.warning.controller.admin.warning.home.vo.WarningEquipmentVO">
+        SELECT
+            id,
+            COUNT(*) AS total,
+            SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS handle_count,
+            equipment_id,
+            equipment_name,
+            status
+        FROM warning_record
+        GROUP BY equipment_id
+        ORDER BY total DESC
+        LIMIT 5;
+    </select>
+
+
+
+    <select id="getRecordActionDetailList"
+            resultType="cn.snowsoft.iot.module.warning.controller.admin.warning.record.vo.WarningRecordDetailRespVO">
+        SELECT
+            id,
+            action_name,
+            output_way,
+            action_type
+        FROM
+            warning_config_action
+        <where>
+            deleted=0
+            <if test="warningRecord.configId != null ">
+                and config_id = #{warningRecord.configId}
+            </if>
+        </where>
+    </select>
+</mapper>

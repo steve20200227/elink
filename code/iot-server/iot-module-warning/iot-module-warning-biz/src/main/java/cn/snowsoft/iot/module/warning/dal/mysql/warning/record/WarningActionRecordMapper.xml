@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.warning.dal.mysql.warning.record.WarningActionRecordMapper">
+
+
+    <select id="selectOutputRecord" resultType="cn.snowsoft.iot.module.warning.controller.admin.warning.record.vo.WarningActionRecordRespVO">
+        SELECT
+        wor.*,
+        wa.action_name,
+        wa.output_way
+        FROM
+        warning_action_record wor
+        LEFT JOIN warning_north wa ON wor.action_id = wa.id
+        <where>
+            wor.action_type = 3
+            and wor.deleted = 0
+            and wa.deleted = 0
+            <if test="warningRecordDetailReqVO.actionId != null">
+                and wor.action_id = #{warningRecordDetailReqVO.actionId}
+            </if>
+            <if test="warningRecordDetailReqVO.outputStatus != null and warningRecordDetailReqVO.outputStatus != ''">
+                and wor.output_status = #{warningRecordDetailReqVO.outputStatus}
+            </if>
+
+            <if test="warningRecordDetailReqVO.outputWay != null and warningRecordDetailReqVO.outputWay != ''">
+                and wa.output_way = #{warningRecordDetailReqVO.outputWay}
+            </if>
+        </where>
+        order by wor.create_time desc
+    </select>
+    <select id="getMessageRecordDetailList"
+            resultType="cn.snowsoft.iot.module.message.api.messageRecord.dto.MessageRecordRespDto">
+        SELECT
+        r.*,
+        t.template_name,
+        a.app_name
+        FROM
+        message_record r
+        LEFT JOIN message_template t ON r.template_id = t.template_id
+        LEFT JOIN message_app a ON a.app_id = r.app_id
+        <where>
+            1=1
+            and r.warning_record_id in
+            <foreach collection="warningTagList" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,6 @@
+cn.snowsoft.iot.framework.apilog.config.YudaoApiLogAutoConfiguration
+cn.snowsoft.iot.framework.jackson.config.YudaoJacksonAutoConfiguration
+cn.snowsoft.iot.framework.swagger.config.YudaoSwaggerAutoConfiguration
+cn.snowsoft.iot.framework.web.config.YudaoWebAutoConfiguration
+cn.snowsoft.iot.framework.apilog.config.YudaoApiLogRpcAutoConfiguration
+cn.snowsoft.iot.framework.banner.config.YudaoBannerAutoConfiguration

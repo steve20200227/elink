@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.cps.dal.mysql.equipment.EquipmentPointMapper">
+
+
+    <select id="selectPointPage"
+            resultType="cn.snowsoft.iot.module.cps.dal.dataobject.equipment.EquipmentPointDO">
+        SELECT * from cps_equipment_point
+        WHERE
+        deleted = 0
+        <if test="entity.equipmentId != null">
+            and equipment_id = #{entity.equipmentId}
+        </if>
+        <if test="entity.isEnable != null">
+            and is_enable = #{entity.isEnable}
+        </if>
+        <if test="entity.pointType != null and entity.pointType != ''">
+            and point_type = #{entity.pointType}
+        </if>
+        <if test="entity.pointName != null and entity.pointName != ''">
+            and point_name like concat(concat('%', #{entity.pointName}), '%')
+        </if>
+        order by create_time desc
+    </select>
+</mapper>

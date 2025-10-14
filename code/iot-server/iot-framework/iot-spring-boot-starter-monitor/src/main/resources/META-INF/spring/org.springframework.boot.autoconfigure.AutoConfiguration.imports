@@ -1,0 +1,2 @@
+cn.snowsoft.iot.framework.tracer.config.YudaoTracerAutoConfiguration
+cn.snowsoft.iot.framework.tracer.config.YudaoMetricsAutoConfiguration

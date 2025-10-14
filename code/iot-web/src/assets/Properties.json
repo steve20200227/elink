@@ -1,0 +1,2022 @@
+{
+  "source": {
+    "mqtt": {
+      "id": "1-1",
+      "parent": "1",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "MQTT",
+          "zh": "MQTT"
+        },
+        "helpUrl": {
+          "en": "https://ekuiper.org/docs/en/latest/guide/sources/builtin/mqtt.html",
+          "zh": "https://ekuiper.org/docs/zh/latest/guide/sources/builtin/mqtt.html"
+        },
+        "description": {
+          "en": "subscribe the message from MQTT broker and feed into the processing pipeline.",
+          "zh": "订阅来自 MQTT 代理的消息并输入处理管道。"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "exist": false,
+          "name": "connectionSelector",
+          "default": "",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [],
+          "hint": {
+            "en": "specify the source to reuse the connection defined in connection configuration.",
+            "zh": "此数据源复用 connection 中定义的连接"
+          },
+          "label": {
+            "en": "Connection selector",
+            "zh": "复用连接信息"
+          }
+        },
+        {
+          "exist": false,
+          "name": "topic",
+          "default": "topic1",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The MQTT topic to subscribe to, e.g. topic1",
+            "zh": "将要订阅的 MQTT 主题， 例如 topic1"
+          },
+          "label": {
+            "en": "Data Source (MQTT Topic)",
+            "zh": "数据源（MQTT 主题）"
+          }
+        },
+        {
+          "exist": false,
+          "name": "server",
+          "default": "tcp://127.0.0.1:1883",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The server for MQTT message broker.",
+            "zh": "MQTT 消息代理的服务器。"
+          },
+          "label": {
+            "en": "Server Address",
+            "zh": "服务器地址"
+          }
+        },
+        {
+          "exist": false,
+          "name": "username",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The username for MQTT connection.",
+            "zh": "MQTT 连接用户名。"
+          },
+          "label": {
+            "en": "Username",
+            "zh": "用户名"
+          }
+        },
+        {
+          "exist": false,
+          "name": "password",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The password for MQTT connection.",
+            "zh": "MQTT 连接密码。"
+          },
+          "label": {
+            "en": "Password",
+            "zh": "密码"
+          }
+        },
+        {
+          "exist": false,
+          "name": "protocolVersion",
+          "default": "3.1.1",
+          "type": "string",
+          "control": "select",
+          "connection_related": true,
+          "optional": true,
+          "values": [
+            "3.1",
+            "3.1.1"
+          ],
+          "hint": {
+            "en": "MQTT protocol version. 3.1 (also refer as MQTT 3) or 3.1.1 (also refer as MQTT 4). If not specified, the default value is 3.1.",
+            "zh": "MQTT 协议版本。3.1 (也被称为 MQTT 3) 或者 3.1.1 (也被称为 MQTT 4)。 "
+          },
+          "label": {
+            "en": "MQTT Protocol Version",
+            "zh": "MQTT 协议版本"
+          }
+        },
+        {
+          "exist": false,
+          "name": "clientid",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The client id for MQTT connection. If not specified, an uuid will be used.",
+            "zh": "MQTT 连接的客户端 ID。 如果未指定，将使用一个 uuid。"
+          },
+          "label": {
+            "en": "MQTT Client ID",
+            "zh": "客户端 ID"
+          }
+        },
+        {
+          "exist": false,
+          "name": "qos",
+          "default": 1,
+          "type": "int",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [
+            0,
+            1,
+            2
+          ],
+          "hint": {
+            "en": "The default subscription QoS level.",
+            "zh": "默认订阅 QoS 级别"
+          },
+          "label": {
+            "en": "QoS level",
+            "zh": "QoS 级别"
+          }
+        },
+        {
+          "exist": false,
+          "name": "certificationPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of certification path. It can be an absolute path, or a relative path.",
+            "zh": "证书路径。可以为绝对路径，也可以为相对路径。如果指定的是相对路径，那么父目录为执行 server 命令的路径。"
+          },
+          "label": {
+            "en": "Certification path",
+            "zh": "证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "privateKeyPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of private key path. It can be an absolute path, or a relative path. ",
+            "zh": "私钥路径。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Private key path",
+            "zh": "私钥路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "rootCaPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of root ca path. It can be an absolute path, or a relative path. ",
+            "zh": "根证书路径，用以验证服务器证书。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Root CA path",
+            "zh": "根证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "insecureSkipVerify",
+          "default": false,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Control if to skip the certification verification. If it is set to true, then skip certification verification; Otherwise, verify the certification.",
+            "zh": "控制是否跳过证书认证。如果被设置为 true，那么跳过证书认证；否则进行证书验证。"
+          },
+          "label": {
+            "en": "Skip Certification verification",
+            "zh": "跳过证书验证"
+          }
+        },
+        {
+          "exist": false,
+          "name": "decompression",
+          "default": "",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [
+            "zlib",
+            "gzip",
+            "flate",
+            "zstd"
+          ],
+          "hint": {
+            "en": "Decompress the MQTT payload with the specified compression method. Leave blank to not decompress.",
+            "zh": "使用指定的压缩方法解压缩 MQTT Payload，留空表示不解压缩。"
+          },
+          "label": {
+            "en": "Decompression",
+            "zh": "解压缩"
+          }
+        }
+      ]
+    },
+    "httppull": {
+      "id": "1-2",
+      "parent": "1",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "HTTP PULL",
+          "zh": "HTTP PULL"
+        },
+        "helpUrl": {
+          "en": "https://ekuiper.org/docs/en/latest/guide/sources/builtin/http_pull.html",
+          "zh": "https://ekuiper.org/docs/zh/latest/guide/sources/builtin/http_pull.html"
+        },
+        "description": {
+          "en": "eKuiper provides built-in support for pulling HTTP source stream, which can pull the message from HTTP server broker and feed into the eKuiper processing pipeline.",
+          "zh": "eKuiper 为提取 HTTP 源流提供了内置支持，该支持可从 HTTP 服务器代理提取消息并输入 eKuiper 处理管道。"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "exist": false,
+          "name": "url",
+          "default": "http://127.0.0.1:5536",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The URL where to get the result.",
+            "zh": "获取结果的 URL"
+          },
+          "label": {
+            "en": "URL",
+            "zh": "路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "method",
+          "default": "get",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": false,
+          "values": [
+            "post",
+            "get",
+            "put",
+            "delete"
+          ],
+          "hint": {
+            "en": "HTTP method, it could be post, get, put \u0026 delete.",
+            "zh": "HTTP 方法，它可以是 post、get、put 和 delete。"
+          },
+          "label": {
+            "en": "HTTP method",
+            "zh": "HTTP 方法"
+          }
+        },
+        {
+          "exist": false,
+          "name": "interval",
+          "default": 1000,
+          "type": "int",
+          "control": "text",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The interval between the requests, time unit is ms.",
+            "zh": "请求之间的间隔时间，单位为 ms"
+          },
+          "label": {
+            "en": "Interval",
+            "zh": "间隔时间"
+          }
+        },
+        {
+          "exist": false,
+          "name": "timeout",
+          "default": 5000,
+          "type": "int",
+          "control": "text",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The timeout for http request, time unit is ms.",
+            "zh": "http 请求的超时时间，单位为 ms"
+          },
+          "label": {
+            "en": "Timeout",
+            "zh": "超时时间"
+          }
+        },
+        {
+          "exist": false,
+          "name": "incremental",
+          "default": false,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "If it\u0027s set to true, then will compare with last result; If response of two requests are the same, then will skip sending out the result.",
+            "zh": "如果将其设置为 true，则将与最后的结果进行比较； 如果两个请求的响应相同，则将跳过发送结果。"
+          },
+          "label": {
+            "en": "Incremental",
+            "zh": "递增"
+          }
+        },
+        {
+          "exist": false,
+          "name": "body",
+          "default": "",
+          "type": "string",
+          "control": "textarea",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The body of request",
+            "zh": "请求的正文"
+          },
+          "label": {
+            "en": "Body",
+            "zh": "正文"
+          }
+        },
+        {
+          "exist": false,
+          "name": "bodyType",
+          "default": "json",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Body type, it could be none|text|json|html|xml|javascript|format.",
+            "zh": "正文类型,可以是 none|text|json|html|xml|javascript| 格式"
+          },
+          "label": {
+            "en": "Body type",
+            "zh": "正文类型"
+          }
+        },
+        {
+          "exist": false,
+          "name": "certificationPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of certification path. It can be an absolute path, or a relative path.",
+            "zh": "证书路径。可以为绝对路径，也可以为相对路径。如果指定的是相对路径，那么父目录为执行 server 命令的路径。"
+          },
+          "label": {
+            "en": "Certification path",
+            "zh": "证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "privateKeyPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of private key path. It can be an absolute path, or a relative path. ",
+            "zh": "私钥路径。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Private key path",
+            "zh": "私钥路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "rootCaPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of root ca path. It can be an absolute path, or a relative path. ",
+            "zh": "根证书路径，用以验证服务器证书。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Root CA path",
+            "zh": "根证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "certficationRaw",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "base64 encoded original text of the cert",
+            "zh": "经过 base64 编码的证书原文"
+          },
+          "label": {
+            "en": "Raw Cert",
+            "zh": "证书原文"
+          }
+        },
+        {
+          "exist": false,
+          "name": "privateKeyRaw",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "base64 encoded original text of the key",
+            "zh": "经过 base64 编码的密钥原文"
+          },
+          "label": {
+            "en": "Raw Key",
+            "zh": "密钥原文"
+          }
+        },
+        {
+          "exist": false,
+          "name": "rootCARaw",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "base64 encoded original text of the ca",
+            "zh": "经过 Base64 编码的密钥原文"
+          },
+          "label": {
+            "en": "Raw CA",
+            "zh": "根证书原文"
+          }
+        },
+        {
+          "exist": false,
+          "name": "insecureSkipVerify",
+          "default": true,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Control if to skip the certification verification. If it is set to true, then skip certification verification; Otherwise, verify the certification.",
+            "zh": "控制是否跳过证书认证。如果被设置为 true，那么跳过证书认证；否则进行证书验证。"
+          },
+          "label": {
+            "en": "Skip Certification verification",
+            "zh": "跳过证书验证"
+          }
+        },
+        {
+          "exist": false,
+          "name": "headers",
+          "default": {},
+          "type": "object",
+          "control": "list",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The HTTP request headers that you want to send along with the HTTP request.",
+            "zh": "需要与 HTTP 请求一起发送的 HTTP 请求标头。"
+          },
+          "label": {
+            "en": "HTTP headers",
+            "zh": "HTTP 标头"
+          }
+        },
+        {
+          "exist": false,
+          "name": "responseType",
+          "default": "code",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [
+            "code",
+            "body"
+          ],
+          "hint": {
+            "en": "Response type, could be `code` or `body`. If it is `code`, then eKuiper will check the HTTP response code for response status. If it is `body`, then eKuiper will check the HTTP response body with JSON format and examine the value of the code field.",
+            "zh": "响应类型,可以是 `code` 或者 `body`，如果是 `code`，那么 eKuiper 会检查 HTTP 响应码来判断响应状态。如果是 `body`，那么 eKuiper 会检查 HTTP 响应正文，要求其为 JSON 格式，并且检查 code 字段的值。"
+          },
+          "label": {
+            "en": "Response type",
+            "zh": "响应类型"
+          }
+        },
+        {
+          "exist": false,
+          "name": "oauth",
+          "default": {
+            "access": {
+              "control": "list",
+              "default": {
+                "body": {
+                  "control": "textarea",
+                  "default": "",
+                  "hint": {
+                    "en": "The body of access token request",
+                    "zh": "访问令牌请求的正文"
+                  },
+                  "label": {
+                    "en": "Access Token Request Body",
+                    "zh": "访问令牌请求的正文"
+                  },
+                  "name": "body",
+                  "optional": true,
+                  "type": "string"
+                },
+                "expire": {
+                  "control": "text",
+                  "default": "",
+                  "hint": {
+                    "en": "The expire time or expire time template",
+                    "zh": "过期时间"
+                  },
+                  "label": {
+                    "en": "Expire Time",
+                    "zh": "过期时间"
+                  },
+                  "name": "expire",
+                  "optional": true,
+                  "type": "string"
+                },
+                "url": {
+                  "control": "text",
+                  "default": "",
+                  "hint": {
+                    "en": "The URL where to get the access token.",
+                    "zh": "获取访问令牌的 URL"
+                  },
+                  "label": {
+                    "en": "Access Token URL",
+                    "zh": "访问令牌 URL"
+                  },
+                  "name": "url",
+                  "optional": true,
+                  "type": "string"
+                }
+              },
+              "hint": {
+                "en": "Configure how to fetch the access token.",
+                "zh": "配置如何获取访问令牌。"
+              },
+              "label": {
+                "en": "Access token request",
+                "zh": "访问令牌请求"
+              },
+              "name": "access",
+              "optional": true,
+              "type": "object"
+            },
+            "refresh": {
+              "control": "list",
+              "default": {
+                "body": {
+                  "control": "textarea",
+                  "default": "",
+                  "hint": {
+                    "en": "The body of refresh token request",
+                    "zh": "刷新令牌请求的正文"
+                  },
+                  "label": {
+                    "en": "Refresh token request body",
+                    "zh": "刷新令牌请求的正文"
+                  },
+                  "name": "body",
+                  "optional": true,
+                  "type": "string"
+                },
+                "headers": {
+                  "control": "list",
+                  "hint": {
+                    "en": "The HTTP request headers that you want to send along with the HTTP refresh request.",
+                    "zh": "需要与刷新 Token HTTP 请求一起发送的 HTTP 请求标头。"
+                  },
+                  "label": {
+                    "en": "Refresh token request headers",
+                    "zh": "刷新令牌请求标头"
+                  },
+                  "name": "headers",
+                  "optional": true,
+                  "type": "object"
+                },
+                "url": {
+                  "control": "text",
+                  "default": "",
+                  "hint": {
+                    "en": "The URL where to get the refresh token.",
+                    "zh": "获取更新令牌的 URL"
+                  },
+                  "label": {
+                    "en": "Refresh Token URL",
+                    "zh": "更新令牌 URL"
+                  },
+                  "name": "url",
+                  "optional": true,
+                  "type": "string"
+                }
+              },
+              "hint": {
+                "en": "Configure how to refresh token after expiration.",
+                "zh": "配置令牌过期后如何更新令牌。"
+              },
+              "label": {
+                "en": "Refresh token request",
+                "zh": "更新令牌请求"
+              },
+              "name": "refresh",
+              "optional": true,
+              "type": "object"
+            }
+          },
+          "type": "object",
+          "control": "list",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Configure the oauth authentication flow.",
+            "zh": "配置 OAuth 验证流程。"
+          },
+          "label": {
+            "en": "OAuth",
+            "zh": "OAuth"
+          }
+        }
+      ]
+    },
+    "httppush": {
+      "id": "1-3",
+      "parent": "1",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "HTTP PUSH",
+          "zh": "HTTP PUSH"
+        },
+        "helpUrl": {
+          "en": "https://ekuiper.org/docs/en/latest/guide/sources/builtin/http_push.html",
+          "zh": "https://ekuiper.org/docs/zh/latest/guide/sources/builtin/http_push.html"
+        },
+        "description": {
+          "en": "eKuiper provides built-in support for HTTP server to receive the stream data pushed by HTTP protocol.",
+          "zh": "eKuiper 提供了内置的 HTTP 服务支持，用于接收 HTTP 协议推送的流数据。"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "exist": false,
+          "name": "url",
+          "default": "/api/data",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The path part of the URL is concatenated with the configured HTTP server address to form the final URL. The default HTTP server address is http://localhost:10081  For example, if you enter /api/data, will listen http://localhost:10081/api/data",
+            "zh": "URL 的路径部分，与配置的 HTTP 服务器地址拼接成最终 URL，HTTP 服务器地址默认为 http://localhost:10081 例如输入 /api/data，则将监听 http://localhost:10081/api/data"
+          },
+          "label": {
+            "en": "Data Source (URL Endpoint)",
+            "zh": "数据源（URL 拼接路径）"
+          }
+        },
+        {
+          "exist": false,
+          "name": "method",
+          "default": "POST",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": false,
+          "values": [
+            "POST",
+            "PUT"
+          ],
+          "hint": {
+            "en": "The method to bind the http service",
+            "zh": "http 请求方法"
+          },
+          "label": {
+            "en": "Method",
+            "zh": "请求方法"
+          }
+        }
+      ]
+    },
+    "memory": {
+      "id": "1-4",
+      "parent": "1",
+      "about": {
+        "trial": true,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "Memory",
+          "zh": "Memory"
+        },
+        "helpUrl": {
+          "en": "https://ekuiper.org/docs/en/latest/guide/sources/builtin/memory.html",
+          "zh": "https://ekuiper.org/docs/zh/latest/guide/sources/builtin/memory.html"
+        },
+        "description": {
+          "en": "The source subscribes to topics to consume events from memory sink to form a rule pipeline.",
+          "zh": "内存源可通过订阅主题来消费内存sink里的消息，从而实现规则流水线。"
+        }
+      },
+      "libs": [],
+      "properties": [
+        {
+          "exist": false,
+          "name": "topic",
+          "default": "topic1",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en_US": "The memory topic to subscribe to, e.g. topic1. It is similar to MQTT topic.",
+            "zh_CN": "将要订阅的内存主题， 例如 topic1。类似 MQTT 主题"
+          },
+          "label": {
+            "en_US": "Data Source (Topic)",
+            "zh_CN": "数据源（主题）"
+          }
+        }
+      ]
+    }
+  },
+  "operator": {
+    "filter": {
+      "id": "2-7",
+      "parent": "2",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "filter",
+          "zh": "过滤"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/sqls/query_language_elements.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/sqls/query_language_elements.md"
+        },
+        "description": {
+          "en": "An operation to filter out rows based on a filter condition.",
+          "zh": "用于过滤数据流的操作"
+        }
+      },
+      "properties": [
+        {
+          "name": "expr",
+          "optional": false,
+          "control": "text",
+          "type": "string",
+          "hint": {
+            "en": "filter condition expression",
+            "zh": "过滤条件语句"
+          },
+          "label": {
+            "en": "Condition",
+            "zh": "条件"
+          }
+        }
+      ]
+    },
+    "script": {
+      "id": "2-8",
+      "parent": "2",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "script",
+          "zh": "JavaScript 脚本"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/sqls/query_language_elements.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/sqls/query_language_elements.md"
+        },
+        "description": {
+          "en": "An operation to run script against the message",
+          "zh": "用于针对数据运行脚本的操作"
+        }
+      },
+      "properties": [{
+        "name": "script",
+        "default": "",
+        "optional": false,
+        "control": "textarea",
+        "type": "string",
+        "hint": {
+          "en": "The script text, now supports JavaScript only. Must have a function named exec, whose parameter is the message and the return value must be the processed message.",
+          "zh": "脚本函数的文本，支持javascript。必须包含一个函数，函数名为exec，参数为message，返回值为处理后的message"
+        },
+        "label": {
+          "en": "Script",
+          "zh": "脚本"
+        }
+      }]
+    },
+    "window": {
+      "id": "2-9",
+      "parent": "2",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "window",
+          "zh": "窗口"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/sqls/query_language_elements.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/sqls/query_language_elements.md"
+        },
+        "description": {
+          "en": "An operation to create a streaming window",
+          "zh": "用于创建窗口的操作"
+        }
+      },
+      "properties": [
+        {
+          "name": "type",
+          "default": "",
+          "optional": false,
+          "control": "select",
+          "type": "string",
+          "values": [
+            "tumblingwindow",
+            "hoppingwindow",
+            "slidingwindow",
+            "sessionwindow",
+            "countwindow"
+          ],
+          "hint": {
+            "en": "window type",
+            "zh": "窗口类型"
+          },
+          "label": {
+            "en": "Window Type",
+            "zh": "窗口类型"
+          }
+        },{
+          "name": "unit",
+          "default": "",
+          "optional": false,
+          "control": "select",
+          "type": "string",
+          "values": [
+            "ms",
+            "ss",
+            "mi",
+            "hh",
+            "dd"
+          ],
+          "hint": {
+            "en": "Time unit for the window",
+            "zh": "窗口的时间单位"
+          },
+          "label": {
+            "en": "Time Unit",
+            "zh": "时间单位"
+          }
+        },{
+          "name": "size",
+          "default": "",
+          "optional": false,
+          "control": "text",
+          "type": "int",
+          "hint": {
+            "en": "Window Length",
+            "zh": "窗口长度"
+          },
+          "label": {
+            "en": "Window Length",
+            "zh": "窗口长度"
+          }
+        },{
+          "name": "interval",
+          "default": "",
+          "optional": false,
+          "control": "text",
+          "type": "int",
+          "hint": {
+            "en": "Window trigger interval",
+            "zh": "窗口触发周期"
+          },
+          "label": {
+            "en": "Window Trigger Interval",
+            "zh": "窗口触发周期"
+          }
+        }]
+    },
+    "JMZQWD": {
+      "id": "2-10",
+      "parent": "2",
+      "about": {
+        "trial": false,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "截面蒸汽温度",
+          "zh": "截面蒸汽温度"
+        },
+        "helpUrl": {
+          "en": "https://github.com/lf-edge/ekuiper/blob/master/docs/en/sqls/query_language_elements.md",
+          "zh": "https://github.com/lf-edge/ekuiper/blob/master/docs/zh/sqls/query_language_elements.md"
+        },
+        "description": {
+          "en": "An operation to filter out rows based on a filter condition.",
+          "zh": "用于截面蒸汽温度的计算"
+        }
+      },
+      "properties": [
+        {
+          "name": "InletTemperature",
+          "optional": false,
+          "control": "text",
+          "type": "string",
+          "hint": {
+            "en": "filter condition expression",
+            "zh": "入口温度"
+          },
+          "label": {
+            "en": "Condition",
+            "zh": "入口温度"
+          }
+        },
+        {
+          "name": "OutletTemperature",
+          "optional": false,
+          "control": "text",
+          "type": "string",
+          "hint": {
+            "en": "filter condition expression",
+            "zh": "出口温度"
+          },
+          "label": {
+            "en": "Condition",
+            "zh": "出口温度"
+          }
+        },
+        {
+          "name": "DeviationCoefficient",
+          "optional": false,
+          "control": "text",
+          "type": "string",
+          "hint": {
+            "en": "filter condition expression",
+            "zh": "偏差系数"
+          },
+          "label": {
+            "en": "Condition",
+            "zh": "偏差系数"
+          }
+        }
+      ]
+    }
+  },
+  "sink": {
+    "mqtt": {
+      "id": "3-1",
+      "parent": "3",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "MQTT",
+          "zh": "MQTT"
+        },
+        "helpUrl": {
+          "en": "https://ekuiper.org/docs/en/latest/guide/sinks/builtin/mqtt.html",
+          "zh": "https://ekuiper.org/docs/zh/latest/guide/sinks/builtin/mqtt.html"
+        },
+        "description": {
+          "en": "The action is used for publish output message into an MQTT server.",
+          "zh": "该操作用于将输出消息发布到 MQTT 服务器中"
+        }
+      },
+      "libs": null,
+      "properties": [
+        {
+          "exist": false,
+          "name": "connectionSelector",
+          "default": "",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [],
+          "hint": {
+            "en": "specify the source to reuse the connection defined in connection configuration.",
+            "zh": "复用 connection 中定义的连接"
+          },
+          "label": {
+            "en": "Connection selector",
+            "zh": "复用连接信息"
+          }
+        },
+        {
+          "exist": false,
+          "name": "server",
+          "default": "tcp://127.0.0.1:1883",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The broker address of the MQTT server, such as tcp://127.0.0.1:1883.",
+            "zh": "MQTT 服务器地址，例如 tcp://127.0.0.1:1883"
+          },
+          "label": {
+            "en": "MQTT broker address",
+            "zh": "MQTT 服务器地址"
+          }
+        },
+        {
+          "exist": false,
+          "name": "topic",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The MQTT topic, such as analysis/result",
+            "zh": "MQTT 主题，例如 analysis/result"
+          },
+          "label": {
+            "en": "MQTT topic",
+            "zh": "MQTT 主题"
+          }
+        },
+        {
+          "exist": false,
+          "name": "clientId",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The client id for MQTT connection. If not specified, an uuid will be used",
+            "zh": "MQTT 连接的客户端 ID。 如果未指定，将使用一个 uuid"
+          },
+          "label": {
+            "en": "MQTT ClientID",
+            "zh": "MQTT 客户端标识符(ClientID)"
+          }
+        },
+        {
+          "exist": false,
+          "name": "protocolVersion",
+          "default": "3.1.1",
+          "type": "string",
+          "control": "select",
+          "connection_related": true,
+          "optional": true,
+          "values": [
+            "3.1",
+            "3.1.1"
+          ],
+          "hint": {
+            "en": "MQTT protocol version. 3.1 (also refer as MQTT 3) or 3.1.1 (also refer as MQTT 4). ",
+            "zh": "MQTT 协议版本。3.1 (也被称为 MQTT 3) 或者 3.1.1 (也被称为 MQTT 4)。"
+          },
+          "label": {
+            "en": "MQTT protocol version",
+            "zh": "MQTT 协议版本"
+          }
+        },
+        {
+          "exist": false,
+          "name": "qos",
+          "default": 0,
+          "type": "list_int",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [
+            0,
+            1,
+            2
+          ],
+          "hint": {
+            "en": "The QoS for message delivery.",
+            "zh": "消息转发的服务质量"
+          },
+          "label": {
+            "en": "QoS",
+            "zh": "QoS"
+          }
+        },
+        {
+          "exist": false,
+          "name": "retained",
+          "default": false,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The Retained for message delivery.",
+            "zh": "转发后的消息是否保留"
+          },
+          "label": {
+            "en": "Retained",
+            "zh": "Retained"
+          }
+        },
+        {
+          "exist": false,
+          "name": "username",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The username for the connection.",
+            "zh": "连接用户名"
+          },
+          "label": {
+            "en": "Username",
+            "zh": "用户名"
+          }
+        },
+        {
+          "exist": false,
+          "name": "password",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The password for the connection.",
+            "zh": "连接密码。"
+          },
+          "label": {
+            "en": "Password",
+            "zh": "密码"
+          }
+        },
+        {
+          "exist": false,
+          "name": "certificationPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The certification path. It can be an absolute path, or a relative path. If it is an relative path, then the base path is where you excuting the kuiperd command. For example, if you run bin/kuiperd from /var/kuiper, then the base path is /var/kuiper; If you run ./kuiperd from /var/kuiper/bin, then the base path is /var/kuiper/bin.",
+            "zh": "证书路径。可以为绝对路径，也可以为相对路径。如果指定的是相对路径，那么父目录为执行 kuiperd 命令的路径。比如，如果你在 /var/kuiper 中运行 bin/kuiperd ，那么父目录为 /var/kuiper; 如果运行从 /var/kuiper/bin 中运行./kuiperd，那么父目录为 /var/kuiper/bin"
+          },
+          "label": {
+            "en": "Certification path",
+            "zh": "证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "privateKeyPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The private key path. It can be either absolute path, or relative path, which is similar to use of certificationPath.",
+            "zh": "私钥路径。可以为绝对路径，也可以为相对路径，相对路径的用法与 certificationPath 类似"
+          },
+          "label": {
+            "en": "Private key path",
+            "zh": "私钥路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "rootCaPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of root ca path. It can be an absolute path, or a relative path. ",
+            "zh": "根证书路径，用以验证服务器证书。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Root Ca path",
+            "zh": "根证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "insecureSkipVerify",
+          "default": false,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "If InsecureSkipVerify is true, TLS accepts any certificate presented by the server and any host name in that certificate.  In this mode, TLS is susceptible to man-in-the-middle attacks. The default value is false. The configuration item can only be used with TLS connections.",
+            "zh": "如果 InsecureSkipVerify 设置为 true, TLS 接受服务器提供的任何证书以及该证书中的任何主机名。 在这种模式下，TLS 容易受到中间人攻击。默认值为 false。配置项只能用于 TLS 连接。"
+          },
+          "label": {
+            "en": "Skip Certification verification",
+            "zh": "跳过证书验证"
+          }
+        },
+        {
+          "exist": false,
+          "name": "compression",
+          "default": null,
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [
+            "zlib",
+            "gzip",
+            "flate",
+            "zstd"
+          ],
+          "hint": {
+            "en": "Compress the payload with the specified compression method. Leave blank to indicate no compression.",
+            "zh": "使用指定的压缩方法压缩 Payload，留空表示不压缩。"
+          },
+          "label": {
+            "en": "Compression",
+            "zh": "压缩"
+          }
+        }
+      ]
+    },
+    "rest": {
+      "id": "3-2",
+      "parent": "3",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "RESTful API",
+          "zh": "RESTful API"
+        },
+        "helpUrl": {
+          "en": "https://ekuiper.org/docs/en/latest/guide/sinks/builtin/rest.html",
+          "zh": "https://ekuiper.org/docs/zh/latest/guide/sinks/builtin/rest.html"
+        },
+        "description": {
+          "en": "The action is used for publish output message into a RESTful API.",
+          "zh": "该动作用于将输出消息发布到 RESTful API 中。"
+        }
+      },
+      "libs": null,
+      "properties": [
+        {
+          "exist": false,
+          "name": "url",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The RESTful API endpoint, such as https://www.example.com/api/dummy",
+            "zh": "RESTful API 终端地址，例如 https://www.example.com/api/dummy"
+          },
+          "label": {
+            "en": "URL",
+            "zh": "地址"
+          }
+        },
+        {
+          "exist": false,
+          "name": "method",
+          "default": "POST",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "HEAD"
+          ],
+          "hint": {
+            "en": "The HTTP method for the RESTful API.",
+            "zh": "RESTful API 的 HTTP 方法。"
+          },
+          "label": {
+            "en": "HTTP method",
+            "zh": "HTTP 方法"
+          }
+        },
+        {
+          "exist": false,
+          "name": "bodyType",
+          "default": "json",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [
+            "none",
+            "json",
+            "text",
+            "html",
+            "xml",
+            "javascript",
+            "form"
+          ],
+          "hint": {
+            "en": "The type of the body. For \"get\" and \"head\", no body is required so the default value is \"none\". For other http methods, the default value is \"json\" For \"html\", \"xml\" and \"javascript\", the dataTemplate must be carefully set up to make sure the format is correct.",
+            "zh": "消息体的类型。对于 \"get\" 和 \"head\"，不需要正文，因此默认值为 \"none\"。 对于其他 http 方法，默认值为 \"json\"。对于 \"html\"，\"xml\" 和 \"javascript\"，必须仔细设置 dataTemplate 以确保格式正确。"
+          },
+          "label": {
+            "en": "Body type",
+            "zh": "消息体类型"
+          }
+        },
+        {
+          "exist": false,
+          "name": "timeout",
+          "default": 5000,
+          "type": "int",
+          "control": "text",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The timeout (milliseconds) for a HTTP request, defaults to 5000 ms",
+            "zh": "HTTP 请求超时的时间（毫秒），默认为 5000 毫秒"
+          },
+          "label": {
+            "en": "Timeout(ms)",
+            "zh": "超时(ms)"
+          }
+        },
+        {
+          "exist": false,
+          "name": "headers",
+          "default": {},
+          "type": "object",
+          "control": "list",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The additional headers to be set for the HTTP request.",
+            "zh": "要为 HTTP 请求设置的其他标头"
+          },
+          "label": {
+            "en": "HTTP headers",
+            "zh": "HTTP 头"
+          }
+        },
+        {
+          "exist": false,
+          "name": "certificationPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of certification path. It can be an absolute path, or a relative path.",
+            "zh": "证书路径。可以为绝对路径，也可以为相对路径。如果指定的是相对路径，那么父目录为执行 server 命令的路径。"
+          },
+          "label": {
+            "en": "Certification path",
+            "zh": "证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "privateKeyPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of private key path. It can be an absolute path, or a relative path. ",
+            "zh": "私钥路径。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Private key path",
+            "zh": "私钥路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "rootCaPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of root ca path. It can be an absolute path, or a relative path. ",
+            "zh": "根证书路径，用以验证服务器证书。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Root CA path",
+            "zh": "根证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "insecureSkipVerify",
+          "default": true,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Control if to skip the certification verification. If it is set to true, then skip certification verification; Otherwise, verify the certification.",
+            "zh": "控制是否跳过证书认证。如果被设置为 true，那么跳过证书认证；否则进行证书验证。"
+          },
+          "label": {
+            "en": "Skip Certification verification",
+            "zh": "跳过证书验证"
+          }
+        },
+        {
+          "exist": false,
+          "name": "debugResp",
+          "default": true,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Control if print the response information into the console. If set it to true, then print response; If set to false, then skip print log.",
+            "zh": "控制是否将响应信息打印到控制台中。 如果将其设置为 true，则打印响应；如果设置为 false，则跳过打印日志。"
+          },
+          "label": {
+            "en": "Print HTTP response",
+            "zh": "打印 HTTP 响应"
+          }
+        },
+        {
+          "exist": false,
+          "name": "responseType",
+          "default": "code",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [
+            "code",
+            "body"
+          ],
+          "hint": {
+            "en": "Response type, could be `code` or `body`. If it is `code`, then eKuiper will check the HTTP response code for response status. If it is `body`, then eKuiper will check the HTTP response body with JSON format and examine the value of the code field.",
+            "zh": "响应类型,可以是 `code` 或者 `body`，如果是 `code`，会检查 HTTP 响应码来判断响应状态。如果是 `body`，会检查 HTTP 响应正文，要求其为 JSON 格式，并且检查 code 字段的值。"
+          },
+          "label": {
+            "en": "Response type",
+            "zh": "响应类型"
+          }
+        },
+        {
+          "exist": false,
+          "name": "oauth",
+          "default": {
+            "access": {
+              "control": "list",
+              "default": {
+                "body": {
+                  "control": "textarea",
+                  "default": "",
+                  "hint": {
+                    "en": "The body of access token request",
+                    "zh": "访问令牌请求的正文"
+                  },
+                  "label": {
+                    "en": "Access Token Request Body",
+                    "zh": "访问令牌请求的正文"
+                  },
+                  "name": "body",
+                  "optional": true,
+                  "type": "string"
+                },
+                "expire": {
+                  "control": "text",
+                  "default": "",
+                  "hint": {
+                    "en": "The expire time or expire time template",
+                    "zh": "过期时间"
+                  },
+                  "label": {
+                    "en": "Expire Time",
+                    "zh": "过期时间"
+                  },
+                  "name": "expire",
+                  "optional": true,
+                  "type": "string"
+                },
+                "url": {
+                  "control": "text",
+                  "default": "",
+                  "hint": {
+                    "en": "The URL where to get the access token.",
+                    "zh": "获取访问令牌的 URL"
+                  },
+                  "label": {
+                    "en": "Access Token URL",
+                    "zh": "访问令牌 URL"
+                  },
+                  "name": "url",
+                  "optional": true,
+                  "type": "string"
+                }
+              },
+              "hint": {
+                "en": "Configure how to fetch the access token.",
+                "zh": "配置如何获取访问令牌。"
+              },
+              "label": {
+                "en": "Access token request",
+                "zh": "访问令牌请求"
+              },
+              "name": "access",
+              "optional": true,
+              "type": "object"
+            },
+            "refresh": {
+              "control": "list",
+              "default": {
+                "body": {
+                  "control": "textarea",
+                  "default": "",
+                  "hint": {
+                    "en": "The body of refresh token request",
+                    "zh": "刷新令牌请求的正文"
+                  },
+                  "label": {
+                    "en": "Refresh token request body",
+                    "zh": "刷新令牌请求的正文"
+                  },
+                  "name": "body",
+                  "optional": true,
+                  "type": "string"
+                },
+                "headers": {
+                  "control": "list",
+                  "hint": {
+                    "en": "The HTTP request headers that you want to send along with the HTTP refresh request.",
+                    "zh": "需要与刷新 Token HTTP 请求一起发送的 HTTP 请求标头。"
+                  },
+                  "label": {
+                    "en": "Refresh token request headers",
+                    "zh": "刷新令牌请求标头"
+                  },
+                  "name": "headers",
+                  "optional": true,
+                  "type": "object"
+                },
+                "url": {
+                  "control": "text",
+                  "default": "",
+                  "hint": {
+                    "en": "The URL where to get the refresh token.",
+                    "zh": "获取更新令牌的 URL"
+                  },
+                  "label": {
+                    "en": "Refresh Token URL",
+                    "zh": "更新令牌 URL"
+                  },
+                  "name": "url",
+                  "optional": true,
+                  "type": "string"
+                }
+              },
+              "hint": {
+                "en": "Configure how to refresh token after expiration.",
+                "zh": "配置令牌过期后如何更新令牌。"
+              },
+              "label": {
+                "en": "Refresh token request",
+                "zh": "更新令牌请求"
+              },
+              "name": "refresh",
+              "optional": true,
+              "type": "object"
+            }
+          },
+          "type": "object",
+          "control": "list",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Configure the oauth authentication flow.",
+            "zh": "配置 OAuth 验证流程。"
+          },
+          "label": {
+            "en": "OAuth",
+            "zh": "OAuth"
+          }
+        }
+      ]
+    },
+    "websocket": {
+      "id": "3-3",
+      "parent": "3",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "nodeLabel": {
+          "en": "WEBSOCKET",
+          "zh": "WEBSOCKET"
+        },
+        "helpUrl": null,
+        "description": {
+          "en": "The action is used for publish output message through websocket connection.",
+          "zh": "该操作用于将输出消息发布通过 websocket 链接发送"
+        }
+      },
+      "libs": null,
+      "properties": [
+        {
+          "exist": false,
+          "name": "connectionSelector",
+          "default": "",
+          "type": "string",
+          "control": "select",
+          "connection_related": false,
+          "optional": true,
+          "values": [],
+          "hint": {
+            "en": "specify the source to reuse the connection defined in connection configuration.",
+            "zh": "复用 connection 中定义的连接"
+          },
+          "label": {
+            "en": "Connection selector",
+            "zh": "复用连接信息"
+          }
+        },
+        {
+          "exist": false,
+          "name": "addr",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "websocket server address. If this address is defined, then eKuiper will apply for a websocket request to this address. If this address is not defined, then eKuiper will act as the websocket server itself.",
+            "zh": "websocket server 端地址，如果定义了该地址，那么 eKuiper 将会向该地址申请 websocket 请求，如果没有定义该地址，那么 eKuiper 将会自己作为 websocket server 端"
+          },
+          "label": {
+            "en": "websocket server address",
+            "zh": "websocket server address"
+          }
+        },
+        {
+          "exist": false,
+          "name": "path",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "\nThe url for websocket to apply for a connection. If addr is defined, then eKuiper will apply for a connection to the path where addr is located. If the addr is not defined, then eKuiper will use this url as the websocket server.",
+            "zh": "websocket 申请连接的 url，如果定义了 addr，那么 eKuiper 将会向 addr 所在 path 端申请连接，如果没有定义 url，那么 eKuiper 将会自身以该 url 作为 websocket server 端"
+          },
+          "label": {
+            "en": "websocket path",
+            "zh": "websocket path"
+          }
+        },
+        {
+          "exist": false,
+          "name": "certificationPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The certification path. It can be an absolute path, or a relative path. If it is an relative path, then the base path is where you excuting the kuiperd command. For example, if you run bin/kuiperd from /var/kuiper, then the base path is /var/kuiper; If you run ./kuiperd from /var/kuiper/bin, then the base path is /var/kuiper/bin.",
+            "zh": "证书路径。可以为绝对路径，也可以为相对路径。如果指定的是相对路径，那么父目录为执行 kuiperd 命令的路径。比如，如果你在 /var/kuiper 中运行 bin/kuiperd ，那么父目录为 /var/kuiper; 如果运行从 /var/kuiper/bin 中运行./kuiperd，那么父目录为 /var/kuiper/bin"
+          },
+          "label": {
+            "en": "Certification path",
+            "zh": "证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "privateKeyPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The private key path. It can be either absolute path, or relative path, which is similar to use of certificationPath.",
+            "zh": "私钥路径。可以为绝对路径，也可以为相对路径，相对路径的用法与 certificationPath 类似"
+          },
+          "label": {
+            "en": "Private key path",
+            "zh": "私钥路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "rootCaPath",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "The location of root ca path. It can be an absolute path, or a relative path. ",
+            "zh": "根证书路径，用以验证服务器证书。可以为绝对路径，也可以为相对路径。"
+          },
+          "label": {
+            "en": "Root Ca path",
+            "zh": "根证书路径"
+          }
+        },
+        {
+          "exist": false,
+          "name": "insecureSkipVerify",
+          "default": false,
+          "type": "bool",
+          "control": "radio",
+          "connection_related": true,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "If InsecureSkipVerify is true, TLS accepts any certificate presented by the server and any host name in that certificate.  In this mode, TLS is susceptible to man-in-the-middle attacks. The default value is false. The configuration item can only be used with TLS connections.",
+            "zh": "如果 InsecureSkipVerify 设置为 true, TLS接受服务器提供的任何证书以及该证书中的任何主机名。 在这种模式下，TLS容易受到中间人攻击。默认值为false。配置项只能用于TLS连接。"
+          },
+          "label": {
+            "en": "Skip Certification verification",
+            "zh": "跳过证书验证"
+          }
+        }
+      ]
+    },
+    "memory": {
+      "id": "3-4",
+      "parent": "3",
+      "about": {
+        "trial": false,
+        "installed": true,
+        "author": {
+          "name": "EMQ",
+          "email": "contact@emqx.io",
+          "company": "EMQ Technologies Co., Ltd",
+          "website": "https://www.emqx.io"
+        },
+        "helpUrl": {
+          "en": "https://ekuiper.org/docs/en/latest/guide/sinks/builtin/memory.html",
+          "zh": "https://ekuiper.org/docs/zh/latest/guide/sinks/builtin/memory.html"
+        },
+        "nodeLabel": {
+          "en": "MEMORY",
+          "zh": "MEMORY"
+        },
+        "description": {
+          "en": "The action is used to flush the result into an in-memory topic so that it can be consumed by the memory source.",
+          "zh": "该操作用于将输出消息发送到内存主题中，以便内存源可以消费。"
+        }
+      },
+      "libs": null,
+      "properties": [
+        {
+          "exist": false,
+          "name": "topic",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": false,
+          "values": null,
+          "hint": {
+            "en": "The topic, such as analysis/result",
+            "zh": "主题，例如 analysis/result"
+          },
+          "label": {
+            "en": "Topic",
+            "zh": "主题"
+          }
+        },
+        {
+          "exist": false,
+          "name": "rowkindField",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Specify which field represents the action like insert or update. If not specified, all rows are default to insert",
+            "zh": "指定哪个字段表示操作，例如插入或更新。如果不指定，默认所有的数据都是插入操作"
+          },
+          "label": {
+            "en": "Rowkind Field",
+            "zh": "动作字段"
+          }
+        },
+        {
+          "exist": false,
+          "name": "keyField",
+          "default": "",
+          "type": "string",
+          "control": "text",
+          "connection_related": false,
+          "optional": true,
+          "values": null,
+          "hint": {
+            "en": "Specify which field represents the key of the message. It is required when rowkindField is specified.",
+            "zh": "指定哪个字段表示消息的 key。当指定了动作字段时，该字段是必须的。"
+          },
+          "label": {
+            "en": "Key Field",
+            "zh": "Key 字段"
+          }
+        }
+      ]
+    }
+  }
+}

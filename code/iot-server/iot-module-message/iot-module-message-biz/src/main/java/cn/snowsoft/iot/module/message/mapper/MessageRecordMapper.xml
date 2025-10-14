@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.message.mapper.MessageRecordMapper">
+
+    <!--
+        一般情况下，尽可能使用 Mapper 进行 CRUD 增删改查即可。
+        无法满足的场景，例如说多表关联查询，才使用 XML 编写 SQL。
+        代码生成器暂时只生成 Mapper XML 文件本身，更多推荐 MybatisX 快速开发插件来生成查询。
+        文档可见：https://www.iocoder.cn/MyBatis/x-plugins/
+     -->
+    <select id="selectPageMessageRecord"  resultType="cn.snowsoft.iot.module.message.controller.admin.vo.MessageRecordRespVO">
+
+        SELECT
+        r.*,
+        t.template_name,
+        a.app_name
+        FROM
+        message_record r
+        LEFT JOIN message_template t ON r.template_id = t.template_id
+        LEFT JOIN message_app a ON a.app_id = r.app_id
+        <where>
+            1=1
+            <if test="messageRecord.templateName != null and messageRecord.templateName != ''">
+                and t.template_name like concat(concat('%', #{messageRecord.templateName}), '%')
+            </if>
+            <if test="messageRecord.appName != null and messageRecord.appName != ''">
+                and a.app_name like concat(concat('%', #{messageRecord.appName}), '%')
+            </if>
+            <if test="messageRecord.messageStatus != null">
+                and r.message_status = #{messageRecord.messageStatus}
+            </if>
+            <if test="messageRecord.channelType != null and messageRecord.channelType != ''">
+                and r.channel_type = #{messageRecord.channelType}
+            </if>
+        </where>
+        order by create_time desc
+
+    </select>
+
+    <select id="selectMessageRecord"  resultType="cn.snowsoft.iot.module.message.api.messageRecord.dto.MessageRecordRespDto">
+
+        SELECT
+        r.*,
+        t.template_name,
+        a.app_name
+        FROM
+        message_record r
+        LEFT JOIN message_template t ON r.template_id = t.template_id
+        LEFT JOIN message_app a ON a.app_id = r.app_id
+        <where>
+            1=1
+            <if test="messageRecord.warningRecordId != null and messageRecord.warningRecordId != ''">
+                and r.warning_record_id = #{messageRecord.warningRecordId}
+            </if>
+            <if test="messageRecord.warningActionId != null and messageRecord.warningActionId != ''">
+                and r.warning_action_id = #{messageRecord.warningActionId}
+            </if>
+        </where>
+
+
+    </select>
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.cps.dal.mysql.monitoring.MonitoringMapper">
+    <resultMap id="BaseResultMap" type="cn.snowsoft.iot.module.cps.dal.dataobject.monitoring.Monitoring">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="revision" column="revision" jdbcType="INTEGER"/>
+        <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+        <result property="createDept" column="create_dept" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="update_user" jdbcType="BIGINT"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+        <result property="terminalCoding" column="terminal_coding" jdbcType="VARCHAR"/>
+        <result property="terminalName" column="terminal_name" jdbcType="VARCHAR"/>
+        <result property="agreementNameid" column="agreement_nameid" jdbcType="VARCHAR"/>
+        <result property="agreementName" column="agreement_name" jdbcType="VARCHAR"/>
+        <result property="isEnable" column="is_enable" jdbcType="CHAR"/>
+        <result property="isStatus" column="is_status" jdbcType="CHAR"/>
+        <result property="protocolParams" column="protocol_params" jdbcType="VARCHAR"/>
+        <result property="heartbeatTopic" column="heartbeat_topic" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,revision,create_user,
+        create_dept,create_time,update_user,
+        update_time,status,deleted,
+        terminal_coding,remark,terminal_name,
+        agreement_nameid,agreement_name,is_enable,
+        is_status,protocol_params,heartbeat_topic
+    </sql>
+    <select id="selectMonitoringPage" resultMap="BaseResultMap">
+        select * from cps_monitoring where deleted = 0
+        <if test="monitoring.terminalName != null and monitoring.terminalName != ''">
+            and terminal_name like concat('%',#{monitoring.terminalName},'%')
+        </if>
+        <if test="monitoring.terminalCoding != null and monitoring.terminalCoding != ''">
+            and terminal_coding like concat('%',#{monitoring.terminalCoding},'%')
+        </if>
+        <if test="monitoring.isEnable != null and monitoring.isEnable != ''">
+            and is_enable = #{monitoring.isEnable}
+        </if>
+    </select>
+</mapper>

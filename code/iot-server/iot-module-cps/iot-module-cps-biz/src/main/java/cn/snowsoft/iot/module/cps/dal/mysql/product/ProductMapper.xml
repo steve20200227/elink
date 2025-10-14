@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.cps.dal.mysql.product.ProductMapper">
+
+
+    <select id="selectProductPage"
+            resultType="cn.snowsoft.iot.module.cps.controller.admin.product.vo.ProductPage">
+        SELECT p.*, count(e.product_code) as equipment_count from cps_product p
+        left join cps_equipment e on p.product_code = e.product_code and e.deleted = 0
+        <where>
+            p.deleted = 0
+            <if test="entity.productName != null and entity.productName != ''">
+                and p.product_name like concat(concat('%', #{entity.productName}), '%')
+            </if>
+            <if test="entity.productCode != null and entity.productCode != ''">
+                and p.product_code like concat(concat('%', #{entity.productCode}), '%')
+            </if>
+            <if test="entity.isEnable!=null">
+                and p.is_enable = #{entity.isEnable}
+            </if>
+            <if test="entity.productSortId != null">
+                and p.product_sort_id = #{entity.productSortId}
+            </if>
+        </where>
+        group by p.product_code
+        order by p.create_time desc
+    </select>
+    <select id="getEquipmentCount"
+            resultType="cn.snowsoft.iot.module.cps.controller.admin.home.vo.ProductAssociationEquipmentVO">
+        SELECT
+            p.product_name,
+            count( e.product_code ) AS equipment_count
+        FROM
+            cps_product p
+                LEFT JOIN cps_equipment e ON p.product_code = e.product_code
+        WHERE
+            p.deleted = 0
+        GROUP BY
+            p.product_code
+        ORDER BY
+            equipment_count DESC
+        limit 5
+    </select>
+    <select id="getIsEnableCount"
+            resultType="cn.snowsoft.iot.module.cps.controller.admin.home.vo.ProductStatusVO">
+        select
+            is_enable,
+            count(*) as count
+        from cps_product
+        where deleted = 0
+        group by is_enable
+    </select>
+    <select id="isAssociationEquipment"
+            resultType="cn.snowsoft.iot.module.cps.controller.admin.product.vo.ProductPage">
+        SELECT p.*, count(e.product_code) as equipment_count from cps_product p
+        left join (select * from cps_equipment where deleted = 0) e on p.product_code = e.product_code
+        <where>
+            p.deleted = 0
+            and p.id in
+            <foreach collection="ids" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </where>
+        group by p.product_code
+        order by p.create_time desc
+    </select>
+</mapper>

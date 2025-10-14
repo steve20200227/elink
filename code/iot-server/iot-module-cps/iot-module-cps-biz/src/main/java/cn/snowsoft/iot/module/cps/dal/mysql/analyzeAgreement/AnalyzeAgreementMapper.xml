@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.cps.dal.mysql.analyzeAgreement.AnalyzeAgreementMapper">
+    <select id="selectAnalyzeAgreementePage"
+            resultType="cn.snowsoft.iot.module.cps.dal.dataobject.analyzeAgreement.AnalyzeAgreementDO">
+        SELECT * from cps_analyze_agreement
+        WHERE
+        deleted = 0
+        <if test="entity.agreementCode != null and entity.agreementCode != ''">
+            and agreement_code like concat(concat('%', #{entity.agreementCode}), '%')
+        </if>
+        <if test="entity.agreementName != null and entity.agreementName != ''">
+            and agreement_name like concat(concat('%', #{entity.agreementName}), '%')
+        </if>
+        order by create_time desc
+    </select>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.cps.dal.mysql.cpsRule.CpsRuleServiceMapper">
+
+
+    <select id="selectCpsRulePage"
+            resultType="cn.snowsoft.iot.module.cps.dal.dataobject.cpsRule.CpsRule">
+        SELECT * from cps_rule
+        WHERE
+        deleted = 0
+        <if test="entity.productId != null">
+            and rule_code = #{entity.ruleCode}
+        </if>
+        <if test="entity.isEnable != null">
+            and is_enable = #{entity.isEnable}
+        </if>
+        order by create_time desc
+    </select>
+</mapper>

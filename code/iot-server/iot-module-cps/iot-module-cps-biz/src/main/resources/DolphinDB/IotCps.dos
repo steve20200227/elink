@@ -1,0 +1,212 @@
+module IotCps
+
+
+//向量方式
+//向量方式  jsonObj当作字典用  根据表结构插入数据 数据与表不匹配的字段赋值为空
+def consumerMessage(msg){
+     // 加载数据库/创建数据库
+    if(!existsDatabase("dfs://iot")){
+        database("dfs://iot", RANGE, sort(distinct(yearBegin(2020.01.01..2050.01.01))))
+    }
+    db = database("dfs://iot")
+    msgObj = parseExpr(msg).eval()
+    //应对数组 或者 单个对象情况
+   if(typestr(msgObj) == string('ANY VECTOR')){
+   for(jsonObj in msgObj){
+       try{
+            deviceCode = jsonObj.deviceCode
+            ptTable = "pt_" + deviceCode
+            ptTableObj =  loadTable(db,ptTable)
+            columnList = ptTableObj.columnNames()
+            //转换时间类型  对象字典赋值需要用中括号这种格式 里面可写变量
+            jsonObj['thetime']=temporalParse(jsonObj.thetime, "yyyy-MM-dd HH:mm:ss")
+            //获取表的信息
+            tableInfo = schema(ptTableObj).colDefs
+
+            index = 0;
+            matrixArray = array(ANY, size columnList);
+            for(column in columnList){
+            //获取当前列信息
+
+            currentTableInfo = tableInfo[index]
+
+            if(!in(column, jsonObj)){
+                  tempNull = parseExpr(lower(currentTableInfo.typeString+"(null)")).eval()
+                  tempDict=tempNull
+            }else{
+                 //根据列名访问字典对应的值
+                 tempDict=jsonObj[column]
+            }
+
+            //将tempVector定义为向量  向量需要两个及两个以上的值为向量
+            tempVector=tempDict
+            matrixArray[index]=sqlColAlias(<tempVector>,column).eval()
+            index=index+1
+            }
+            num = tableInsert(ptTableObj,unifiedCall(table,matrixArray));
+        } catch(ex){
+            // 一条数据异常不影响其他的数据保存
+            writeLog(ex)
+        }
+	}
+    }
+
+    if(typestr(msgObj) == string('STRING->ANY DICTIONARY')) {
+    jsonObj = parseExpr(msg).eval()
+
+        try{
+            deviceCode = jsonObj.deviceCode
+            ptTable = "pt_" + deviceCode
+            ptTableObj =  loadTable(db,ptTable)
+            columnList = ptTableObj.columnNames()
+            //转换时间类型  对象字典赋值需要用中括号这种格式 里面可写变量
+            jsonObj['thetime']=temporalParse(jsonObj.thetime, "yyyy-MM-dd HH:mm:ss")
+            //获取表的信息
+            tableInfo = schema(ptTableObj).colDefs
+
+            index = 0;
+            matrixArray = array(ANY, size columnList);
+            for(column in columnList){
+            //获取当前列信息
+
+            currentTableInfo = tableInfo[index]
+
+            if(!in(column, jsonObj)){
+                  tempNull = parseExpr(lower(currentTableInfo.typeString+"(null)")).eval()
+                  tempDict=tempNull
+            }else{
+                 //根据列名访问字典对应的值
+                 tempDict=jsonObj[column]
+            }
+
+            //将tempVector定义为向量  向量需要两个及两个以上的值为向量
+            tempVector=tempDict
+            matrixArray[index]=sqlColAlias(<tempVector>,column).eval()
+            index=index+1
+            }
+            num = tableInsert(ptTableObj,unifiedCall(table,matrixArray));
+        } catch(ex){
+            // 一条数据异常不影响其他的数据保存
+            writeLog(ex)
+        }
+
+    }
+}
+
+/**
+ * 创建rabbitmq连接，声明数据持久化队列并启动消费
+ *
+ * @param dbPath        数据库名称
+ **/
+def connectRabbitmq(ip,port,username,password,virtualHost,queueName,routeKey){
+    //建立连接
+    conn = rabbitmq::connection(ip, port, username, password, virtualHost)
+    go
+    //获取连接通道
+    ch = rabbitmq::channel(conn)
+    go
+    //声明队列
+    rabbitmq::declareQueue(ch, queueName, ['durable'])
+    //绑定路由
+    rabbitmq::bindQueue(ch, 'amq.topic', queueName, routeKey)
+    //启动消费
+    rabbitmq::consume(ch, queueName, consumerMessage, 'bytestream', 'consumerPoint')
+}
+
+/**
+ * 关闭rabbitmq连接
+ *
+ * @param dbPath        数据库名称
+ **/
+def closeRabbitmq(){
+    rabbitmq::closeAll();
+}
+
+/**
+ * 创建数据库
+ *
+ * @param dbPath        数据库名称
+ **/
+def createDatabase(dbPath){
+    if(existsDatabase(dbPath)){
+        return database(dbPath)
+    } else {
+        return database(dbPath, RANGE, sort(distinct(yearBegin(2020.01.01..2050.01.01))))
+    }
+}
+
+/*
+ * 创建表
+ * @param dbPath        数据库名称
+ * @param deviceCode    机台名称
+ * @param model         机台模型
+ **/
+def createDeviceTable(dbPath, deviceCode, model){
+    // 加载数据库/创建数据库
+    if(!existsDatabase(dbPath)){
+        database(dbPath, RANGE, sort(distinct(yearBegin(2020.01.01..2050.01.01))))
+    }
+    db = database(dbPath)
+    ptTable = "pt_" + deviceCode
+    // 解析数据
+    modelObj = parseExpr(model).eval()
+    columnNames = ["thetime", "deviceCode"]
+    columnTypes = [TIMESTAMP, SYMBOL]
+    for(item in modelObj){
+        columnNames.append!(item.name)
+        //对字符串类型进行判断转换  适配别的时序库 统一类型都为字符串 dolphin需要特殊转换一下
+        if(typestr(item.type) == 'STRING'){
+            columnTypes.append!(parseExpr(item.type).eval())
+        }else{
+            columnTypes.append!(item.type)
+        }
+
+    }
+
+    // 创建分区表
+    if(existsTable(dbPath, ptTable)){
+        // 分区表已存在， 查询是否需要添加字段
+        theTable = loadTable(database(dbPath), ptTable)
+        tableNames = schema(theTable).colDefs.name
+        for(item in modelObj){
+            if(!in(item.name, tableNames)){
+                //增加字段时也需要进行转换
+                if(typestr(item.type) == 'STRING'){
+                    addColumn(theTable, [item.name], [parseExpr(item.type).eval()])
+                }else{
+                    addColumn(theTable, [item.name], [item.type])
+                }
+            }
+        }
+    } else {
+        db.createPartitionedTable(table = table(1:0, columnNames, columnTypes), tableName = ptTable, partitionColumns = `thetime)
+    }
+
+}
+
+
+
+/*
+ * 删除表
+ * @param dbPath        数据库名称
+ * @param deviceCode    机台名称
+ **/
+def deleteDeviceTable(dbPath, deviceCode){
+    if(!existsDatabase(dbPath)){
+        return true
+    }
+   db = database(dbPath)
+   ptTable = "pt_" + deviceCode
+   dropTable(db,ptTable)
+}
+
+
+
+//清除库里所有表数据
+def clearDatabaseTableData(){
+    listTable = listTables("dfs://ktg_iot")
+    for(item in listTable){
+        truncate("dfs://ktg_iot", item['tableName'])
+    }
+}
+

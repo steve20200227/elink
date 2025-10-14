@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.warning.dal.mysql.warning.config.WarningMapper">
+
+
+    <select id="selectProductPage"
+            resultType="cn.snowsoft.iot.module.warning.dal.dataobject.warning.config.WarningDO">
+        SELECT * from warning_config
+        WHERE
+        deleted = 0
+        <if test="entity.warningName != null and entity.warningName != ''">
+            and warning_name like concat(concat('%', #{entity.warningName}), '%')
+        </if>
+        <if test="entity.equipmentCode != null and entity.equipmentCode != ''">
+            and FIND_IN_SET(#{entity.equipmentCode}, equipment_code) > 0
+        </if>
+        <if test="entity.isEnable!=null">
+            and is_enable = #{entity.isEnable}
+        </if>
+        order by create_time desc
+    </select>
+    <select id="getWarningCountByEquipmentId"
+            resultType="cn.snowsoft.iot.module.warning.dal.dataobject.warning.config.WarningDO">
+        select * from warning_config
+        where deleted = 0
+        <if test="equipmentCodeList != null and equipmentCodeList.size > 0">
+            and
+            (
+               <trim prefixOverrides="OR">
+                   <foreach collection="equipmentCodeList" item="item">
+                        OR find_in_set(#{item}, equipment_code) > 0
+                   </foreach>
+               </trim>
+            )
+        </if>
+    </select>
+    <select id="getEquipmentRelateWarning"
+            resultType="cn.snowsoft.iot.module.warning.controller.admin.warning.home.vo.EquipmentRelateWarningVO">
+        SELECT
+            equipment_id,
+            count(*) as warning_count
+        FROM warning_config
+        where deleted = 0
+        GROUP BY equipment_id
+        ORDER BY warning_count desc
+        limit 5
+    </select>
+    <select id="getStatusCount"
+            resultType="cn.snowsoft.iot.module.warning.controller.admin.warning.home.vo.WarningConfigStatusVO">
+        select
+            is_enable,
+            count(*) as count
+        from warning_config
+        where deleted = 0
+        group by is_enable
+    </select>
+    <select id="getWarningByEquipmentCode"
+            resultType="cn.snowsoft.iot.module.warning.dal.dataobject.warning.config.WarningDO">
+        select * from warning_config
+        where deleted = 0
+            and FIND_IN_SET(#{equipmentCode}, equipment_code) > 0
+    </select>
+    <select id="getEquipmentNameByCodes" resultType="cn.snowsoft.iot.module.warning.controller.admin.warning.config.vo.EquipmentVO">
+        select equipment_code, equipment_name from cps_equipment
+        where deleted = 0 and equipment_code in
+        <foreach collection="equipmentCodes" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

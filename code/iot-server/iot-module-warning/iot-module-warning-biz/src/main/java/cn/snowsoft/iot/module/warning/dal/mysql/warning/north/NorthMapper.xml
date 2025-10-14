@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.snowsoft.iot.module.warning.dal.mysql.warning.north.NorthMapper">
+
+
+    <select id="selectActionPage"
+            resultType="cn.snowsoft.iot.module.warning.dal.dataobject.warning.north.NorthDO">
+        SELECT * from warning_north
+        WHERE
+        deleted = 0
+        <if test="entity.actionName != null and entity.actionName != ''">
+            and action_name like concat(concat('%', #{entity.actionName}), '%')
+        </if>
+        <if test="entity.actionType != null and entity.actionType != ''">
+            and action_type = #{entity.actionType}
+        </if>
+        order by create_time desc
+    </select>
+    <select id="getActionTypeCount"
+            resultType="cn.snowsoft.iot.module.warning.controller.admin.warning.home.vo.ActionTypeCountVO">
+        SELECT
+            output_way,
+            count(*) as action_count
+        FROM
+            warning_north
+        where
+            deleted = 0
+        GROUP BY output_way
+    </select>
+</mapper>

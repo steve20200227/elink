@@ -1,0 +1,3 @@
+cn.snowsoft.iot.framework.mq.redis.config.YudaoRedisMQProducerAutoConfiguration
+cn.snowsoft.iot.framework.mq.redis.config.YudaoRedisMQConsumerAutoConfiguration
+cn.snowsoft.iot.framework.mq.rabbitmq.config.YudaoRabbitMQAutoConfiguration

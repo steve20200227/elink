@@ -1,0 +1,5 @@
+cn.snowsoft.iot.framework.security.config.YudaoSecurityRpcAutoConfiguration
+cn.snowsoft.iot.framework.security.config.YudaoSecurityAutoConfiguration
+cn.snowsoft.iot.framework.security.config.YudaoWebSecurityConfigurerAdapter
+cn.snowsoft.iot.framework.operatelog.config.YudaoOperateLogConfiguration
+cn.snowsoft.iot.framework.operatelog.config.YudaoOperateLogRpcAutoConfiguration
