@@ -32,7 +32,7 @@
 
 [接入设备](https://jp0gmbtpep.feishu.cn/docx/Tzgbd3U5EocPyPx3RZzcDwrKnOh?from=from_copylink)
 
-[在线体验](http://http://111.21.251.50:81/login)(账号：demo,密码：123456)
+[在线体验](http://111.21.251.50:81/login)(账号：demo,密码：123456)
 
 
 ### 功能列表
